@@ -4,10 +4,7 @@ import com.ubnt.discovery.QueryScheduler;
 import com.ubnt.discovery.UbntDiscoveryTool;
 import com.ubnt.discovery.UbntResourceBundle;
 import com.ubnt.net.QueryServer;
-import com.ubnt.ui.action.ClearAction;
-import com.ubnt.ui.action.DelegateAction;
-import com.ubnt.ui.action.ExitAction;
-import com.ubnt.ui.action.ScanAction;
+import com.ubnt.ui.action.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -185,10 +182,17 @@ public class UbntDiscoveryToolFrame extends JFrame
     protected void initComponents() {
         toolBar = new JToolBar();
         toolBar.setBorder(new LineBorder(toolBar.getBackground().darker()));
-        toolBar.add(scanAction);
-        toolBar.add(clearAction);
-        toolBar.addSeparator();
-        toolBar.add(exitAction);
+
+        Action[] actions = {
+          scanAction, clearAction, null,
+          new ImportAction(), new ExportAction(), null,
+          exitAction
+        };
+
+        for (Action action : actions) {
+            if (action == null) toolBar.addSeparator();
+            else toolBar.add(action);
+        }
 
         JPanel helpContext = new JPanel(new FlowLayout());
         helpContext.add(helpLabel);

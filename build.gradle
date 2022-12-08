@@ -7,8 +7,8 @@ group 'com.ubnt.discovery'
 version '1.0-SNAPSHOT'
 
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = 1.9
-targetCompatibility = 1.9
+sourceCompatibility = 13
+targetCompatibility = 13
 
 repositories {
     mavenCentral()
@@ -43,6 +43,7 @@ task UbntTool(type: Jar) {
             it.isDirectory() ? it : zipTree(it)
         }
     } {
+        // preventing signed jars into the final JAR
         exclude "META-INF/*.SF"
         exclude "META-INF/*.DSA"
         exclude "META-INF/*.RSA"
@@ -54,7 +55,7 @@ java {
     withSourcesJar()
     // Comment out the next statement if you don't want ot generate
     // the Javadoc files
-    withJavadocJar()
+    // withJavadocJar()
 }
 
 test {
