@@ -150,7 +150,7 @@ public abstract class UbntUiTableModel
      * @param list the service cache
      * @return {@code null} if none was found or the discovered service
      */
-    private IUbntService getCachedService(final IUbntService service,
+    private synchronized IUbntService getCachedService(final IUbntService service,
                                           List<IUbntService> list) {
 
         String              hardwareAddress = null;
@@ -181,7 +181,7 @@ public abstract class UbntUiTableModel
      * @see #getColumnCount
      */
     @Override
-    public int getRowCount() {
-        return services.size();
+    public synchronized int getRowCount() {
+        return rows.size();
     }
 }

@@ -46,30 +46,37 @@ public final class UbntDiscoveryTool {
      * THe default pathname for the {@link UbntDiscoveryTool}'s configuration.
      */
     public static final String PATHNAME = "ubnt-tool.properties";
+
     /**
      * The GUI's main frame.
      */
     private static UbntDiscoveryToolFrame frame;
+
     /**
      * The build id of this tool defined as {@code main.build.id}.
      */
     private static String buildId;
+
     /**
      * The build id of this tool defined as {@code main.version}.
      */
     private static String versionId;
+
     /**
      * All server classes that should run on start of this tool.
      */
     private static Class<?>[] serverClasses;
+
     /**
      * All runnable server objects from the {@code ubnt.net} module.
      */
     private static QueryServer[] servers;
+
     /**
      * The query-scheduler task.
      */
     private static Runnable scheduler;
+
     /**
      * Global configuration.
      */
@@ -197,7 +204,7 @@ public final class UbntDiscoveryTool {
      */
     private static void setLookAndFeel() {
         try {
-            String clsName = getProperty("ubnt.ui.laf", "com.formdev.flatlaf.FlatLightLaf");
+            String clsName = getProperty("ubnt.ui.laf", null);
 
             if (clsName != null) {
                 if (System.getProperty("java.version").compareTo("1.9") < 0) {

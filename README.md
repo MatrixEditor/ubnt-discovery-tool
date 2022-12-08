@@ -23,7 +23,7 @@ At the moment, the following functions are implemented:
 1. Scanning the network for devices (10s interval)
 2. Show details of each device by hovering over it (ToolTip)
 
-Releases will be published with and without the `FlatLaf` LookAndFeel dependency to prevent errors with Java version `1.8`. A quick impression of what the output of this utility looks like (mocked service):
+Releases will be published with and without the `FlatLaf` LookAndFeel dependency to prevent errors with Java version `8`. A quick impression of what the output of this utility looks like (mocked service):
 
 ![example](docs/ToolExample.png)
 

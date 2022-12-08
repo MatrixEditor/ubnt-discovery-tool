@@ -17,7 +17,7 @@ public class ScanAction extends AbstractAction {
         super(UbntResourceBundle.getString("action.scan"));
         this.model = model;
         this.time  = 0L;
-        putValue(Action.SHORT_DESCRIPTION, "Scan network for devices");
+        putValue(Action.SHORT_DESCRIPTION, UbntResourceBundle.getString("action.scan.tooltip"));
     }
 
     /**

@@ -30,7 +30,7 @@ public class ExitAction extends AbstractAction
         super(UbntResourceBundle.getString("action.exit"));
         this.wrapper = wrapper;
         wrapper.addWindowListener(this);
-        putValue(Action.SHORT_DESCRIPTION, "Exit application");
+        putValue(Action.SHORT_DESCRIPTION, UbntResourceBundle.getString("action.exit.tooltip"));
     }
 
     /**
@@ -41,6 +41,7 @@ public class ExitAction extends AbstractAction
     @Override
     public void actionPerformed(ActionEvent e) {
         int result = 0;
+        boolean selected = false;
         if (UbntDiscoveryTool.getProperty("exit.confirm", "true")
                              .equals("true")) {
             JCheckBox box = new JCheckBox(
@@ -53,10 +54,11 @@ public class ExitAction extends AbstractAction
                     }, UbntResourceBundle.getString("action.exit.confirm.title"),
                     JOptionPane.YES_NO_OPTION);
 
-            UbntDiscoveryTool.put("exit.confirm", Boolean.toString(box.isSelected()));
+            selected = box.isSelected();
         }
 
         if (result == JOptionPane.YES_OPTION) {
+            UbntDiscoveryTool.put("exit.confirm", Boolean.toString(selected));
             System.exit(0);
         }
     }

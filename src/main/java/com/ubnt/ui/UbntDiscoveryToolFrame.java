@@ -140,7 +140,7 @@ public class UbntDiscoveryToolFrame extends JFrame
         scanAction  = new ScanAction(model);
         clearAction = new DelegateAction(getString("action.clear"));
         clearAction.addListener(new ClearAction(model));
-        clearAction.putValue(Action.SHORT_DESCRIPTION, "Clear service list");
+        clearAction.putValue(Action.SHORT_DESCRIPTION, getString("action.clear.tooltip"));
 
         exitAction = new ExitAction(this);
 

@@ -74,7 +74,7 @@ public final class UbntResourceBundle {
      */
     public static ImageIcon getResourceIcon(String path) {
         try {
-            URL url = UbntResourceBundle.class.getResource(path);
+            URL url = UbntResourceBundle.class.getResource(normalizePath(path));
             if (url != null) {
                 return new ImageIcon(SVGUtil.loadSVG(url));
             }
@@ -82,6 +82,36 @@ public final class UbntResourceBundle {
             System.err.println(e.toString());
         }
         return null;
+    }
+
+    /**
+     * Trying to resolve '_dark.svg' images.
+     *
+     * @param path the base path
+     * @return the edited path
+     */
+    private static String normalizePath(String path) {
+        String laf = UbntDiscoveryTool.getProperty("ubnt.ui.laf", null);
+        if (laf == null) {
+            return path;
+        }
+
+        try {
+            // First, checking if the current look and feel is dark by
+            // executing the FlatLaf#isLafDark() method.
+            Class<?> cls = Class.forName("com.formdev.flatlaf.FlatLaf");
+            if ((Boolean) cls.getMethod("isLafDark").invoke(null)) {
+                // Querying for the resource with the name plus the
+                // '_dark.svg' suffix.
+                String name = path.substring(0, path.lastIndexOf('.'));
+                return UbntResourceBundle.class.getResource(name + "_dark.svg") != null
+                        ? name + "_dark.svg"
+                        : name + ".svg";
+            }
+        } catch (Exception e) {
+            // ignore that
+        }
+        return path;
     }
 
 }
