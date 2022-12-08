@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+
+}
+
+group 'com.ubnt.discovery'
+version '1.0-SNAPSHOT'
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Library used for displaying SVG images
+    implementation 'org.apache.xmlgraphics:batik-all:1.16'
+
+    // Library used for a modern LookAndFeel. If you don't want to use this just
+    // leave the ubnt.ui.laf property empty in the ubnt-tool.properties file.
+    implementation 'com.formdev:flatlaf:2.6'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes('Main-Class': 'com.ubnt.discovery.UbntDiscoveryTool')
+    }
+}
+
+//noinspection ConfigurationAvoidance
+task UbntTool(type: Jar) {
+    manifest.from jar.manifest
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    with jar
+}
+
+java {
+    withSourcesJar()
+    // Comment out the next statement if you don't want ot generate
+    // the Javadoc files
+    withJavadocJar()
+}
+
+test {
+    useJUnitPlatform()
+}
