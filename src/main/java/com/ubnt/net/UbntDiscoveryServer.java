@@ -74,7 +74,7 @@ public class UbntDiscoveryServer extends IDiscoveryServer {
         ServiceLoader<IUbntService.Parser> parserServiceLoader =
                 ServiceLoader.load(IUbntService.Parser.class, UbntDiscoveryServer.class.getClassLoader());
 
-        dsLogger.setLevel(Level.ALL);
+        dsLogger.setLevel(Level.OFF);
         for (IUbntService.Parser serviceParser : parserServiceLoader) {
             dsLogger.info("[UDS]::static{parser="
                                   + serviceParser.getClass().getSimpleName() + "}");

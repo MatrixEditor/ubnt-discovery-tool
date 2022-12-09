@@ -3,6 +3,7 @@ package com.ubnt.net; //@date 07.12.2022
 import com.ubnt.net.IUbntService.Record;
 import com.ubnt.net.IUbntService.RecordParser;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,10 @@ public abstract class BaseServiceParser extends IUbntService.Parser {
      */
     private static final Logger vXLogger
             = Logger.getLogger(BaseServiceParser.class.getSimpleName());
+
+    static {
+        vXLogger.setLevel(Level.OFF);
+    }
 
     /**
      * A factory wrapper used to create the {@link IUbntService}.

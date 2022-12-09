@@ -5,6 +5,8 @@ import com.ubnt.discovery.UbntDiscoveryTool;
 import com.ubnt.discovery.UbntResourceBundle;
 import com.ubnt.net.QueryServer;
 import com.ubnt.ui.action.*;
+import com.ubnt.ui.info.UbntServiceDetails;
+import com.ubnt.ui.info.UbntUiDetailsDialog;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -28,7 +30,7 @@ public class UbntDiscoveryToolFrame extends JFrame
     /**
      * The main table displaying all discovered services.
      */
-    protected UbntUiTable table;
+    public UbntTable table;
 
     /**
      * Simple listener wrapper.
@@ -94,6 +96,16 @@ public class UbntDiscoveryToolFrame extends JFrame
     private DelegateAction clearAction;
 
     /**
+     * See {@link OpenInfoAction} for more details.
+     */
+    private Action infoAction;
+
+    /**
+     * The details frame covering details about every service.
+     */
+    private UbntUiDetailsDialog detailsDialog;
+
+    /**
      * Creates the main frame for the {@code UbntDiscoveryTool}.
      *
      * @param title the frame's title
@@ -129,8 +141,9 @@ public class UbntDiscoveryToolFrame extends JFrame
         }
 
         handler = new Handler();
+        detailsDialog = new UbntServiceDetails(this, null, true);
 
-        table = new UbntUiTable(model);
+        table = new UbntTable(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         table.addMouseListener(handler);
         textFieldSearch = new JTextField(18);
@@ -143,6 +156,7 @@ public class UbntDiscoveryToolFrame extends JFrame
         clearAction.putValue(Action.SHORT_DESCRIPTION, getString("action.clear.tooltip"));
 
         exitAction = new ExitAction(this);
+        infoAction = new OpenInfoAction(table, detailsDialog);
 
         ImageIcon image = getResourceIcon("/com/ubnt/icons/ubnt-tool-icon_64.svg");
         if (image != null) {
@@ -184,7 +198,7 @@ public class UbntDiscoveryToolFrame extends JFrame
         toolBar.setBorder(new LineBorder(toolBar.getBackground().darker()));
 
         Action[] actions = {
-          scanAction, clearAction, null,
+          scanAction, clearAction, infoAction, null,
           new ImportAction(), new ExportAction(), null,
           exitAction
         };
@@ -335,7 +349,9 @@ public class UbntDiscoveryToolFrame extends JFrame
          */
         @Override
         public void mouseClicked(MouseEvent e) {
-
+            if (e.getClickCount() == 2) {
+                infoAction.actionPerformed(null);
+            }
         }
 
         /**

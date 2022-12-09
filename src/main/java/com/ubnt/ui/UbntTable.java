@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
  *
  * @see UbntUiTableModel
  */
-public class UbntUiTable extends JTable {
+public class UbntTable extends JTable {
 
     /**
      * Whether the sorting is supported.
@@ -40,7 +40,7 @@ public class UbntUiTable extends JTable {
      * @see #createDefaultColumnModel
      * @see #createDefaultSelectionModel
      */
-    public UbntUiTable(UbntUiTableModel model) {
+    public UbntTable(UbntUiTableModel model) {
         super(model);
         setup(model);
     }

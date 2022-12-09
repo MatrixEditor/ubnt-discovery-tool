@@ -41,7 +41,7 @@ public abstract class IDiscoveryServer extends QueryServer {
             Collections.synchronizedMap(new HashMap<>());
 
     static {
-        idsLogger.setLevel(Level.ALL);
+        idsLogger.setLevel(Level.OFF);
     }
 
     /**

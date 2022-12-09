@@ -37,7 +37,7 @@ If you want to build the app with all dependencies, run:
 
     ./gradlew build UbntTool --warning-mode all
 
-This utility requires at least Java 9 if you want to use the FlatLaf UI, otherwise 
+This utility requires at least Java 9 if you want to use the FlatLaf UI. 
 
 ## Getting Help
 

@@ -20,6 +20,8 @@ dependencies {
 
     // Library used for a modern LookAndFeel. If you don't want to use this just
     // leave the ubnt.ui.laf property empty in the ubnt-tool.properties file.
+    // Just comment out this line and the library won't be included in the project
+    // build.
     implementation 'com.formdev:flatlaf:2.6'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'

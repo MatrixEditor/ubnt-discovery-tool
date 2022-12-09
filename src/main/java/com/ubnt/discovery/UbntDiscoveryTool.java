@@ -50,7 +50,7 @@ public final class UbntDiscoveryTool {
     /**
      * The GUI's main frame.
      */
-    private static UbntDiscoveryToolFrame frame;
+    public static UbntDiscoveryToolFrame frame;
 
     /**
      * The build id of this tool defined as {@code main.build.id}.
@@ -75,7 +75,7 @@ public final class UbntDiscoveryTool {
     /**
      * The query-scheduler task.
      */
-    private static Runnable scheduler;
+    private static QueryScheduler scheduler;
 
     /**
      * Global configuration.
@@ -185,7 +185,7 @@ public final class UbntDiscoveryTool {
         put("frame.width", String.valueOf(frame.getWidth()));
         put("frame.height", String.valueOf(frame.getHeight()));
 
-        if (getBoolean("ubnt.config.save", true)) {
+        if (getBoolean("ubnt.config.save", false)) {
             try {
                 File file = new File("./", PATHNAME);
                 try (FileOutputStream stream = new FileOutputStream(file)) {
@@ -207,7 +207,7 @@ public final class UbntDiscoveryTool {
             String clsName = getProperty("ubnt.ui.laf", null);
 
             if (clsName != null) {
-                if (System.getProperty("java.version").compareTo("1.9") < 0) {
+                if (System.getProperty("java.version").compareTo("9") > 0) {
                     System.err.println("Could not start FlatLaf on Java running version < 1.9");
                 } else {
                     Class<?> cls = Class.forName(clsName);
@@ -260,6 +260,11 @@ public final class UbntDiscoveryTool {
      * Starts the scheduler thread that sends query packets every 10 seconds.
      */
     public static void scheduleScan() {
+        if (scheduler != null) {
+            if (scheduler.isRunning()) {
+                return;
+            }
+        }
         scheduler = new QueryScheduler(10000L, 20, (QueryScheduler.ScheduleListener) frame);
 
         Thread schedulerThread = new Thread(scheduler);

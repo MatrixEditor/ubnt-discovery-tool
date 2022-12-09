@@ -138,4 +138,8 @@ public class QueryScheduler implements Runnable {
     private void sendAll() {
         UbntDiscoveryTool.queryAndStart();
     }
+
+    public boolean isRunning() {
+        return running;
+    }
 }

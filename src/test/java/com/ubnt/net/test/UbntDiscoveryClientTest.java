@@ -36,12 +36,12 @@ public class UbntDiscoveryClientTest {
         service.add(create(FW_VERSION, "BZZ..."));
         service.add(create(DEFAULT, true));
 
-//        TableModel model = UbntDiscoveryTool.frame.table.getModel();
-//        if (model instanceof UbntUiTableModel) {
-//            ((UbntUiTableModel) model).setScanning(true);
-//            ((UbntUiTableModel) model).onServiceLocated(service);
-//            ((UbntUiTableModel) model).setScanning(false);
-//        }
+        TableModel model = UbntDiscoveryTool.frame.table.getModel();
+        if (model instanceof UbntUiTableModel) {
+            ((UbntUiTableModel) model).setScanning(true);
+            ((UbntUiTableModel) model).onServiceLocated(service);
+            ((UbntUiTableModel) model).setScanning(false);
+        }
 
     }
 }
