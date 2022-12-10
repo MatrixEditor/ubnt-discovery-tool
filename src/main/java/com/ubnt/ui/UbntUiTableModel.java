@@ -132,7 +132,15 @@ public abstract class UbntUiTableModel
             rows.set(index, service);
             if (!fireUpdate) return;
 
-            fireTableRowsInserted(index, index);
+            try {
+                if (index != rows.size()) {
+                    fireTableRowsInserted(index, index);
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // Ignore this error. NPE will be displayed as the rows'
+                // values to indicate an error occurred. THis happens when
+                // a filter is applied to the table during a scan.
+            }
         }
     }
 

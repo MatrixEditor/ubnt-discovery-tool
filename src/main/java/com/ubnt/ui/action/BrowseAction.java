@@ -13,6 +13,11 @@ import static com.ubnt.discovery.UbntResourceBundle.getString;
 
 public class BrowseAction extends AbstractAction {
 
+    /**
+     * Format string that contains the command that will be executed on
+     * command line when trying to open an url. Note that this format
+     * will depend on the used OS.
+     */
     private static final String openBrowserFormat;
 
     static {
@@ -31,8 +36,16 @@ public class BrowseAction extends AbstractAction {
         }
     }
 
+    /**
+     * Method reference to query the {@link IUbntService}.
+     */
     private final Supplier<IUbntService> serviceSupplier;
 
+    /**
+     * Instantiates a new Browse action.
+     *
+     * @param serviceSupplier the service supplier
+     */
     public BrowseAction(Supplier<IUbntService> serviceSupplier) {
         super(getString("action.open.browser"));
         this.serviceSupplier = serviceSupplier;
@@ -57,20 +70,25 @@ public class BrowseAction extends AbstractAction {
 
                 // Basically executing the following command via a terminal
                 // cmd.exe /C "start http[s]://<ip>" on windows
-                if (System.getProperty("os.name").equals("win32")) {
-                    open(openBrowserFormat, uri);
-                }
+                //
+                // This call should be implemented soon:
+                // open(uri);
             }
         }
     }
 
-    private void open(String fmt, String uri) {
+    /**
+     * Opens the given url by executing {@link #openBrowserFormat}.
+     *
+     * @param url the url to open
+     */
+    private void open(String url) {
         try {
             Runtime runtime = Runtime.getRuntime();
-            runtime.exec(MessageFormat.format(fmt, uri));
+            runtime.exec(MessageFormat.format(openBrowserFormat, url));
         }
         catch (Exception e) {
-            String errorMsg = "Error while open link '"+uri+"'";
+            String errorMsg = "Error while open link '"+url+"'";
             JOptionPane.showMessageDialog(null, new UbntTextField(errorMsg));
         }
     }

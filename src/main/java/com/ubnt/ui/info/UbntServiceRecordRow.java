@@ -4,6 +4,11 @@ import com.ubnt.net.IUbntService;
 
 import java.util.AbstractMap;
 
+/**
+ * An Entry maintaining an immutable record type name and record.
+ *
+ * @see UbntServiceInfoModel
+ */
 public class UbntServiceRecordRow
         extends AbstractMap.SimpleImmutableEntry<String, IUbntService.Record> {
 

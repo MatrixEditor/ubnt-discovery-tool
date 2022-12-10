@@ -1,5 +1,6 @@
 package com.ubnt.ui.action; //@date 08.12.2022
 
+import com.ubnt.ui.UbntTable;
 import com.ubnt.ui.UbntUiTableModel;
 
 import javax.swing.*;
@@ -15,14 +16,20 @@ public class ClearAction extends AbstractAction {
      */
     private final UbntUiTableModel tableModel;
 
+    /**
+     * The linked table (used to clear row filter)
+     */
+    private final UbntTable table;
+
 
     /**
      * Instantiates a new Clear action.
      *
-     * @param tableModel the table model
+     * @param table the table
      */
-    public ClearAction(UbntUiTableModel tableModel) {
-        this.tableModel = tableModel;
+    public ClearAction(UbntTable table) {
+        this.tableModel = (UbntUiTableModel) table.getModel();
+        this.table      = table;
     }
 
     /**
@@ -32,6 +39,7 @@ public class ClearAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        table.getRowSorter().setSortKeys(null);
         tableModel.setScanning(false);
         tableModel.clearAll();
         tableModel.reload();

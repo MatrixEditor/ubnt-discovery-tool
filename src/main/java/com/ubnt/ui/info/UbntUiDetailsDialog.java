@@ -8,6 +8,22 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Abstract dialog class that provides a way to create dialog frames with
+ * different global actions and a customizable content.
+ * <p>
+ * All actions should be created by overriding the {@link #createToolBarActions()}
+ * method, because they will be added automatically to the main toolbar of
+ * this dialog. The center component is created via {@link #createBody()}
+ * and won't be added if the method returns {@code null}.
+ * <p>
+ * This dialog is designed to be non-disposable, therefore it will be invisible
+ * upon closing it. Because it would cost much more resources to create new
+ * dialog frames each time service details should be displayed, the service's
+ * attributed are loaded via {@link #loadService(IUbntService)}.
+ *
+ * @see UbntServiceInfoDialog
+ */
 public abstract class UbntUiDetailsDialog extends JDialog {
 
     /**

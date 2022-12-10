@@ -11,14 +11,38 @@ import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Comparator;
 
-public class UbntServiceDetails extends UbntUiDetailsDialog {
+/**
+ * Basic implementation of the {@link UbntUiDetailsDialog} including different
+ * ways to sort the service's attributes and to open the webUI.
+ *
+ * @see UbntUiDetailsDialog
+ */
+public class UbntServiceInfoDialog extends UbntUiDetailsDialog {
 
+    /**
+     * The service model that stores all records that should be displayed.
+     */
     private UbntServiceInfoModel model;
 
+    /**
+     * The action that gets called when trying to navigate to the webUi.
+     */
     private BrowseAction browseAction;
-    private SortAction   sortByType;
-    private SortAction   sortByName;
-    private SortAction   sortByValue;
+
+    /**
+     * Sorts the contents of {@link #model} by the record's type value.
+     */
+    private SortAction sortByType;
+
+    /**
+     * Sorts the contents of {@link #model} by the record's type name.
+     */
+    private SortAction sortByName;
+
+    /**
+     * Sorts the contents of {@link #model} by their values.
+     */
+    private SortAction sortByValue;
 
     /**
      * Creates a {@code UbntUiDetailsDialog} by executing the setup and install
@@ -39,7 +63,7 @@ public class UbntServiceDetails extends UbntUiDetailsDialog {
      * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}
      *                           returns {@code true}.
      */
-    public UbntServiceDetails(Frame owner, String title, boolean modal) {
+    public UbntServiceInfoDialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
         ImageIcon icon = UbntResourceBundle.getResourceIcon("/com/ubnt/icons/device_info_icon.svg");
         if (icon != null) {
@@ -121,25 +145,53 @@ public class UbntServiceDetails extends UbntUiDetailsDialog {
         };
     }
 
+    /**
+     * Sorts the contents of {@link #model} by the record's type value.
+     *
+     * @param r0 first row
+     * @param r1 second row
+     * @return result of {@link Integer#compare(int, int)}
+     */
     private int sortByTypeValue(UbntServiceRecordRow r0, UbntServiceRecordRow r1) {
         return Integer.compare(r0.getValue().getType(), r1.getValue().getType());
     }
 
+    /**
+     * Sorts the contents of {@link #model} by the record's type name.
+     *
+     * @param r0 first row
+     * @param r1 second row
+     * @return result of {@link String#compareTo(String)}
+     */
     private int sortByTypeName(UbntServiceRecordRow r0, UbntServiceRecordRow r1) {
         return r0.getKey().compareTo(r1.getKey());
     }
 
+    /**
+     * Sorts the contents of {@link #model} by their values.
+     *
+     * @param r0 first row
+     * @param r1 second row
+     * @return result of {@link String#compareTo(String)}
+     */
     private int sortByValue(UbntServiceRecordRow r0, UbntServiceRecordRow r1) {
         Object s  = r0.getValue().getPayload();
         Object s1 = r1.getValue().getPayload();
 
-        String n = s == null ? UNKNOWN : s.toString();
+        String n  = s == null ? UNKNOWN : s.toString();
         String n0 = s1 == null ? UNKNOWN : s1.toString();
         return n.compareTo(n0);
     }
 
+    /**
+     * Simple action class that delegates the sorting mechanism of this
+     * dialog.
+     */
     private class SortAction extends AbstractAction {
 
+        /**
+         * Equivalent to a {@link RowSorter}.
+         */
         private final Comparator<UbntServiceRecordRow> filter;
 
         public SortAction(String descKey, String iconPath,

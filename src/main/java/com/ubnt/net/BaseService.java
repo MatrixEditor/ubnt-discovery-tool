@@ -34,22 +34,34 @@ public abstract class BaseService implements IUbntService {
      */
     public static Map<String, String> models =
             Collections.synchronizedMap(new HashMap<>());
+
     /**
      * A simple list storing all parsed records.
      */
     protected List<Record> recordList;
+
     /**
      * The device's ip-address
      */
     private InetAddress address;
+
     /**
      * The networkInterface this service was discovered on.
      */
     private NetworkInterface networkInterface;
 
+    /**
+     * The desired packet version of this service.
+     */
+    private int packetVersion;
+
+    /**
+     * Creates a new service with zero records.
+     */
     public BaseService() {
         recordList = new LinkedList<>();
     }
+
     /**
      * Returns the model description for the given model name.
      *
@@ -136,6 +148,26 @@ public abstract class BaseService implements IUbntService {
         if (record != null) {
             recordList.add(record);
         }
+    }
+
+    /**
+     * Returns the packet version that was used to discover this service.
+     *
+     * @return the packet version
+     */
+    @Override
+    public int getPacketVersion() {
+        return packetVersion;
+    }
+
+    /**
+     * Sets the packet version.
+     *
+     * @param version the version (either 1 or 2)
+     */
+    @Override
+    public void setPacketVersion(int version) {
+        this.packetVersion = version;
     }
 
     /**

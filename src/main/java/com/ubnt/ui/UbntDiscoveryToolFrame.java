@@ -5,7 +5,7 @@ import com.ubnt.discovery.UbntDiscoveryTool;
 import com.ubnt.discovery.UbntResourceBundle;
 import com.ubnt.net.QueryServer;
 import com.ubnt.ui.action.*;
-import com.ubnt.ui.info.UbntServiceDetails;
+import com.ubnt.ui.info.UbntServiceInfoDialog;
 import com.ubnt.ui.info.UbntUiDetailsDialog;
 
 import javax.swing.*;
@@ -141,7 +141,7 @@ public class UbntDiscoveryToolFrame extends JFrame
         }
 
         handler = new Handler();
-        detailsDialog = new UbntServiceDetails(this, null, true);
+        detailsDialog = new UbntServiceInfoDialog(this, null, true);
 
         table = new UbntTable(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -150,9 +150,9 @@ public class UbntDiscoveryToolFrame extends JFrame
         textFieldSearch.getDocument().addDocumentListener(handler);
 
         helpLabel   = createLabel("table.services.help");
-        scanAction  = new ScanAction(model);
+        scanAction  = new ScanAction(table);
         clearAction = new DelegateAction(getString("action.clear"));
-        clearAction.addListener(new ClearAction(model));
+        clearAction.addListener(new ClearAction(table));
         clearAction.putValue(Action.SHORT_DESCRIPTION, getString("action.clear.tooltip"));
 
         exitAction = new ExitAction(this);

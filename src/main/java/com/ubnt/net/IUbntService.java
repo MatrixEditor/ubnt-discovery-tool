@@ -55,6 +55,41 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
     int SSHD_PORT     = 28;
 
     /**
+     * Returns the Web-UI port of version 1 and 2 packets.
+     *
+     * @return the Web-UI port
+     */
+    default int getWebUiPort() {
+        if (!hasWebUi()) {
+            return 0;
+        }
+
+        int port = ((Number)get(WEB_UI).getPayload()).intValue();
+        if (getPacketVersion() == 1) {
+            port &= 0xFFFF;
+        }
+        else {
+            port = (port >> 8) & 0xFF;
+        }
+        return port;
+    }
+
+
+    /**
+     * Returns the packet version that was used to discover this service.
+     *
+     * @return the packet version
+     */
+    int getPacketVersion();
+
+    /**
+     * Sets the packet version.
+     *
+     * @param version the version (either 1 or 2)
+     */
+    void setPacketVersion(int version);
+
+    /**
      * Adds a new {@link Record} to this {@code UbntService}.
      *
      * @param record the record to add.
@@ -147,31 +182,25 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
     }
 
     /**
-     * Returns the Web-UI port if present. This method first queries
-     * the {@link #get(int)} method with {@link #WEB_UI}.
-     *
-     * @return the Web-UI port
-     */
-    default int getWebUiPort() {
-        if (hasWebUi()) {
-            return ((Integer) get(WEB_UI).getPayload()) & 0xFFFF;
-        }
-        return 0;
-    }
-
-    /**
      * Returns the Web-UI protocol (http or https) if present. This method
      * first queries the {@link #get(int)} method with {@link #WEB_UI}.
      *
      * @return the Web-UI protocol, either http or https
      */
     default String getWebUiProtocol() {
-        if (hasWebUi()) {
-            return (0xFFFF & ((Integer) get(WEB_UI).getPayload()) >> 16) > 0
-                    ? "https"
-                    : "http";
+        if (!hasWebUi()) {
+            return "unknown";
         }
-        return "blob";
+
+        int value = (int) get(WEB_UI).getPayload();
+        String protocol;
+        if (getPacketVersion() == 1) {
+            protocol = (value >> 16) > 0 ? "https" : "http";
+        }
+        else {
+            protocol = (value & 0xFF) > 0 ? "https" : "http";
+        }
+        return protocol;
     }
 
     /**
@@ -334,7 +363,7 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
         }
 
         /**
-         * @return  the record's payload
+         * @return the record's payload
          */
         public Object getPayload() {
             return payload;

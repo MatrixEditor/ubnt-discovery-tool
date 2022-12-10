@@ -1,34 +1,80 @@
 package com.ubnt.ui.info; //@date 09.12.2022
 
 import com.ubnt.discovery.UbntResourceBundle;
+import com.ubnt.net.DefaultService;
 import com.ubnt.net.IUbntService;
 import com.ubnt.net.IUbntService.Record;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
+/**
+ * TableModel implementation for the {@link UbntServiceInfoDialog} dialog. This
+ * model contains only two columns:
+ * <ul>
+ *     <li><b>Name:</b> the record's type name</li>
+ *     <li><b>Value:</b> the record's value converted to string</li>
+ * </ul>
+ * In future versions of this class the conversion from {@link Record#getPayload()}
+ * to {@code String} may be delegated to a {@code Converter} class.
+ *
+ * @see UbntServiceInfoDialog
+ */
 class UbntServiceInfoModel extends AbstractTableModel {
 
+    /**
+     * WebUi format string tha should be queried only once.
+     */
+    private static final String webuiFormat =
+            UbntResourceBundle.getString("table.info.webui");
+
+    /**
+     * A map storing all row names that were used to display the records' type
+     * names.
+     */
     // This map is just to decrease the amount of calls to the
     // Record#getTypeName() method
     private final Map<Integer, String> rowNames = new HashMap<>();
 
+    /**
+     * The columns of this model.
+     */
     private final String[] columns = {
             UbntResourceBundle.getString("table.info.column.type"),
             UbntResourceBundle.getString("table.info.column.value")
     };
 
+    /**
+     * The rows of this model.
+     */
     private final List<UbntServiceRecordRow> rows;
 
+    /**
+     * The displayed service.
+     */
+    private volatile IUbntService service;
+
+
+    /**
+     * Instantiates a new Ubnt service info model.
+     */
     public UbntServiceInfoModel() {
         rows = new LinkedList<>();
     }
 
+    /**
+     * Clears the model's content.
+     */
     public synchronized void clear() {
         rows.clear();
         fireTableDataChanged();
     }
 
+    /**
+     * Sorts the {@link #rows} with the given sorter.
+     *
+     * @param comparator the row sorter
+     */
     public synchronized void sort(Comparator<UbntServiceRecordRow> comparator) {
         if (comparator != null) {
             rows.sort(comparator);
@@ -36,7 +82,13 @@ class UbntServiceInfoModel extends AbstractTableModel {
         }
     }
 
+    /**
+     * Loads the service into this model.
+     *
+     * @param service the service to display
+     */
     public synchronized void load(final IUbntService service) {
+        this.service = service;
         if (service == null) {
             return;
         }
@@ -66,6 +118,18 @@ class UbntServiceInfoModel extends AbstractTableModel {
     public synchronized Object getValueAt(int rowIndex, int columnIndex) {
         if (rowIndex < getRowCount() && columnIndex <= 1) {
             Map.Entry<String, Record> entry = rows.get(rowIndex);
+
+            Record record = entry.getValue();
+            if (record.getType() == IUbntService.WEB_UI) {
+                int    port     = service.getWebUiPort();
+                String protocol = service.getWebUiProtocol();
+
+                return String.format(webuiFormat, port, protocol);
+            } else if (record.getType() == IUbntService.UPTIME) {
+                if (service instanceof DefaultService) {
+                    return ((DefaultService) service).getUptime();
+                }
+            }
 
             return columnIndex == 0 ? entry.getKey() : entry.getValue().getPayload();
         }

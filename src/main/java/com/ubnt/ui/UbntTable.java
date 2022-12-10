@@ -21,7 +21,7 @@ public class UbntTable extends JTable {
 
     static {
         String version = System.getProperty("java.version");
-        // Row Filters are available since 1.6 so we have to check against
+        // Row Filters are available since 1.6, so we have to check against
         // the currently running java version.
         isSortingSupported = version.compareTo("1.6") >= 0;
     }
@@ -79,7 +79,6 @@ public class UbntTable extends JTable {
         }
 
         for (IUbntService.Record record : service) {
-
             text.append("<p>").append(record.getTypeName())
                 .append(": ").append(record.getPayload()).append("</p>");
         }

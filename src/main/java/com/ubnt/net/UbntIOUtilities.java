@@ -11,15 +11,17 @@ import static com.ubnt.net.IUbntService.*;
 public class UbntIOUtilities {
 
     /**
-     * Creates an {@code bytes.length * 8} bits integer.
+     * Creates an {@code bytes.length * 8} bits long value. This number should
+     * be casted to an integer if possible.
      *
      * @param bytes the buffer
      * @return an unsigned {@code bytes.length * 8} bits integer.
      */
-    public static int parseInt(byte[] bytes) {
-        int result = 0;
+    public static Number parseInt(byte[] bytes) {
+        long result = 0;
         for (int i = 0; i < bytes.length; i++) {
-            result += ((Byte.toUnsignedInt(bytes[i]) & 255) << ((bytes.length - 1) - i) * 8);
+            int shift = ((bytes.length - 1) - i) * 8;
+            result += ((long) (Byte.toUnsignedInt(bytes[i]) & 255)) << shift;
         }
         return result;
     }
@@ -76,7 +78,11 @@ public class UbntIOUtilities {
 
         static JoiningRecordParser macParser() {
             return new JoiningRecordParser(":", 6, (b) -> {
-                return Integer.toHexString(b & 255).toUpperCase();
+                String s = Integer.toHexString(b & 255).toUpperCase();
+                if (s.length() == 1) {
+                    s = "0" + s;
+                }
+                return s;
             });
         }
 

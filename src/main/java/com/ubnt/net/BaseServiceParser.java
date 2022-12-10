@@ -48,7 +48,7 @@ public abstract class BaseServiceParser extends IUbntService.Parser {
 
         byte[] sizeBuf = new byte[2];
         System.arraycopy(data, 2, sizeBuf, 0, 2);
-        int dataLength = UbntIOUtilities.parseInt(sizeBuf);
+        int dataLength = UbntIOUtilities.parseInt(sizeBuf).intValue();
         vXLogger.info("[ASP]::Parse(dataLength=" + dataLength + ")");
 
         int realLength = dataLength + 1 + 1 + 2;
@@ -59,11 +59,12 @@ public abstract class BaseServiceParser extends IUbntService.Parser {
         }
 
         IUbntService service = factory.createService();
+        service.setPacketVersion(data[0]);
         while (index < realLength) {
             int type = data[index++];
             System.arraycopy(data, index, sizeBuf, 0, 2);
 
-            int size = UbntIOUtilities.parseInt(sizeBuf);
+            int size = UbntIOUtilities.parseInt(sizeBuf).intValue();
             index += 2;
             if (index + size > realLength) {
                 vXLogger.warning("[ASP]::Parse(Invalid record length; type=" + type + ")");
