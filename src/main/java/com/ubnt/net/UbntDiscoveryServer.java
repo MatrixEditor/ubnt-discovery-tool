@@ -147,7 +147,7 @@ public class UbntDiscoveryServer extends IDiscoveryServer {
      * @return the newly created {@link DatagramSocket}
      */
     @Override
-    protected DatagramSocket getSocket(NetworkInterface networkInterface, InetAddress address) throws IOException {
+    protected DatagramSocket getSocket(String networkInterface, InetAddress address) throws IOException {
         SocketAddress socketAddress = new InetSocketAddress(address, UBNT_PORT);
 
         MulticastSocket socket = new MulticastSocket(socketAddress);

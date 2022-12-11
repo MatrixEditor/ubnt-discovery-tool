@@ -29,14 +29,6 @@ class UbntServiceInfoModel extends AbstractTableModel {
             UbntResourceBundle.getString("table.info.webui");
 
     /**
-     * A map storing all row names that were used to display the records' type
-     * names.
-     */
-    // This map is just to decrease the amount of calls to the
-    // Record#getTypeName() method
-    private final Map<Integer, String> rowNames = new HashMap<>();
-
-    /**
      * The columns of this model.
      */
     private final String[] columns = {
@@ -53,7 +45,6 @@ class UbntServiceInfoModel extends AbstractTableModel {
      * The displayed service.
      */
     private volatile IUbntService service;
-
 
     /**
      * Instantiates a new Ubnt service info model.
@@ -95,12 +86,7 @@ class UbntServiceInfoModel extends AbstractTableModel {
 
         for (Record record : service) {
             // guaranteed non null value
-            String typename = rowNames.get(record.getType());
-            if (typename == null) {
-                typename = record.getTypeName();
-                rowNames.put(record.getType(), typename);
-            }
-
+            String typename = record.getTypeName();
             rows.add(new UbntServiceRecordRow(typename, record));
         }
         fireTableDataChanged();

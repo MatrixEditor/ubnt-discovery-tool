@@ -48,7 +48,7 @@ public abstract class BaseService implements IUbntService {
     /**
      * The networkInterface this service was discovered on.
      */
-    private NetworkInterface networkInterface;
+    private String networkInterface;
 
     /**
      * The desired packet version of this service.
@@ -203,7 +203,7 @@ public abstract class BaseService implements IUbntService {
      * @return the interface this service was discovered on.
      */
     @Override
-    public NetworkInterface getInterface() {
+    public String getInterface() {
         return networkInterface;
     }
 
@@ -214,7 +214,7 @@ public abstract class BaseService implements IUbntService {
      * @param networkInterface the new interface
      */
     @Override
-    public void setNetworkInterface(NetworkInterface networkInterface) {
+    public void setNetworkInterface(String networkInterface) {
         this.networkInterface = networkInterface;
     }
 

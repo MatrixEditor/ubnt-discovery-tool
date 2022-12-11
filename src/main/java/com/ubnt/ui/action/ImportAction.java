@@ -23,7 +23,8 @@ import java.io.InputStream;
 /**
  * Imports all services from a selected XML file.
  */
-public class ImportAction extends AbstractAction implements IDiscoveryListener {
+public class ImportAction extends AbstractAction
+        implements IDiscoveryListener, UbntServiceXMLHandler.FinishListener {
 
     /**
      * The global xml handler.
@@ -51,6 +52,8 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
      */
     private JFileChooser fileChooser;
 
+    private int count;
+
     /**
      * Creates a new import action.
      *
@@ -67,6 +70,8 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
         this.handler = new UbntServiceXMLHandler(IUbntService.Factory.getDefaultFactory());
         handler.addListener(model);
         handler.addListener(this);
+        handler.setFinishListener(this);
+
         putValue(Action.SMALL_ICON,
                  UbntResourceBundle.getResourceIcon("/com/ubnt/icons/import.svg"));
 
@@ -92,6 +97,8 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             progressBar.setValue(0);
+            count = model.getRowCount();
+
             Thread thread = new Thread(new Importer());
             thread.setDaemon(true);
             thread.start();
@@ -113,7 +120,20 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
         }
         progressBar.repaint();
         progressBar.getParent().repaint();
+    }
 
+    /**
+     * Invoked when the importing process has finished.
+     */
+    @Override
+    public void onFinish() {
+        count = model.getRowCount() - count;
+        String msg = UbntResourceBundle.format("action.import.dialog.success", String.valueOf(count));
+
+        progressBar.setVisible(false);
+        model.setScanning(false);
+
+        JOptionPane.showMessageDialog(parent, msg);
     }
 
     /**
@@ -134,8 +154,8 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setValidating(true);
 
-            int    count = model.getRowCount();
-            String msg   = null;
+
+            String msg = null;
             try (InputStream stream = new FileInputStream(fileChooser.getSelectedFile())) {
                 SAXParser parser = factory.newSAXParser();
 
@@ -145,15 +165,11 @@ public class ImportAction extends AbstractAction implements IDiscoveryListener {
                 progressBar.setVisible(true);
 
                 parser.parse(stream, handler);
-                model.setScanning(false);
-
-                count = model.getRowCount() - count;
-                msg   = UbntResourceBundle.format("action.import.dialog.success", String.valueOf(count));
-                progressBar.setVisible(false);
             } catch (IOException | SAXException | ParserConfigurationException ex) {
                 msg = UbntResourceBundle.format("action.import.dialog.error", ex.toString());
+                JOptionPane.showMessageDialog(null, msg);
             }
-            JOptionPane.showMessageDialog(parent, msg);
+
         }
     }
 }

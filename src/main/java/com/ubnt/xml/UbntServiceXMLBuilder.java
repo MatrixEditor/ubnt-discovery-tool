@@ -87,11 +87,11 @@ public class UbntServiceXMLBuilder {
         // There is one bind() call in the IDiscoveryServer.class that creates
         // an IDiscoveryChannel with a null interface, so we have to check
         // that here.
-        NetworkInterface networkInterface = service.getInterface();
+        String networkInterface = service.getInterface();
         if (networkInterface == null) {
             netInterface.appendChild(document.createTextNode("null"));
         } else {
-            netInterface.appendChild(document.createTextNode(networkInterface.getName()));
+            netInterface.appendChild(document.createTextNode(networkInterface));
         }
 
 

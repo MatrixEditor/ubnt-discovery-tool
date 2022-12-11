@@ -64,11 +64,10 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
             return 0;
         }
 
-        int port = ((Number)get(WEB_UI).getPayload()).intValue();
+        int port = ((Number) get(WEB_UI).getPayload()).intValue();
         if (getPacketVersion() == 1) {
             port &= 0xFFFF;
-        }
-        else {
+        } else {
             port = (port >> 8) & 0xFF;
         }
         return port;
@@ -140,7 +139,7 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
     /**
      * @return the interface this service was discovered on.
      */
-    NetworkInterface getInterface();
+    String getInterface();
 
     /**
      * Internally changes the {@link NetworkInterface} this service was
@@ -148,7 +147,7 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
      *
      * @param networkInterface the new interface
      */
-    void setNetworkInterface(NetworkInterface networkInterface);
+    void setNetworkInterface(String networkInterface);
 
     /**
      * Returns the raw hardware address if present. This method first queries
@@ -194,12 +193,11 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
             return "unknown";
         }
 
-        int value = ((Number) get(WEB_UI).getPayload()).intValue();
+        int    value = ((Number) get(WEB_UI).getPayload()).intValue();
         String protocol;
         if (getPacketVersion() == 1) {
             protocol = (value >> 16) > 0 ? "https" : "http";
-        }
-        else {
+        } else {
             protocol = (value & 0xFF) > 0 ? "https" : "http";
         }
         return protocol;
@@ -281,6 +279,11 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
         public static final Map<Integer, RecordParser> parsers = new HashMap<>();
 
         /**
+         * Stores all type names.
+         */
+        private static final Map<Integer, String> typenameMap = new HashMap<>();
+
+        /**
          * The raw data buffer. Note that this object is shared between all
          * records and should not be modified.
          */
@@ -332,6 +335,31 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
          */
         public static RecordParser getParser(int type) {
             return parsers.get(type);
+        }
+
+        /**
+         * Returns the cached typename for the given {@link Record}.
+         *
+         * @param record the record
+         * @return the typename for the given {@link Record}.
+         */
+        public static String getTypename(Record record) {
+            // This map is just to decrease the amount of calls to the
+            // Record#getTypeName() method
+            if (typenameMap.isEmpty()) {
+                try {
+                    for (Field field : IUbntService.class.getFields()) {
+                        if (Modifier.isStatic(field.getModifiers()) &&
+                                field.getType() == int.class) {
+                            int value = field.getInt(null);
+                            typenameMap.putIfAbsent(value, field.getName());
+                        }
+                    }
+                } catch (ReflectiveOperationException ignored) {
+                }
+            }
+            return typenameMap.getOrDefault(record.getType(),
+                                            String.valueOf(record.getType()));
         }
 
         public boolean isDefined() {
@@ -393,20 +421,7 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
          *         matches the field's value.
          */
         public String getTypeName() {
-            String name = String.valueOf(getType());
-            try {
-                for (Field field : IUbntService.class.getFields()) {
-                    if (Modifier.isStatic(field.getModifiers()) &&
-                            field.getType() == int.class) {
-                        if (getType() == (Integer) field.get(null)) {
-                            name = field.getName();
-                            break;
-                        }
-                    }
-                }
-            } catch (ReflectiveOperationException ignored) {
-            }
-            return name;
+            return getTypename(this);
         }
 
     }

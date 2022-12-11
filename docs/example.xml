@@ -9,7 +9,6 @@
             <version>1</version>
             <records>
                 <record type="1">value</record>
-                <record type="2" class="Number">1111</record>
                 <record type="3" class="IpInfo">mac;ip</record>
             </records>
         </service>

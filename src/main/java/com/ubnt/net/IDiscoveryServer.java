@@ -125,7 +125,7 @@ public abstract class IDiscoveryServer extends QueryServer {
      * @param address the address to bind to
      * @return {@code true} if no error occurs
      */
-    public boolean bind(NetworkInterface networkInterface, InetAddress address) {
+    public boolean bind(String networkInterface, InetAddress address) {
         DatagramSocket socket = null;
         try {
             socket = getSocket(networkInterface, address);
@@ -289,7 +289,7 @@ public abstract class IDiscoveryServer extends QueryServer {
                 }
 
                 if (isNonLoopback(address)) {
-                    bind(networkInterface, address);
+                    bind(networkInterface.getName(), address);
                 }
             }
         }
@@ -327,7 +327,7 @@ public abstract class IDiscoveryServer extends QueryServer {
      * @return the newly created {@link DatagramSocket}
      */
     protected abstract DatagramSocket getSocket(
-            NetworkInterface networkInterface, InetAddress address) throws IOException;
+            String networkInterface, InetAddress address) throws IOException;
 
     /**
      * Tells the caller whether this {@link QueryServer} has finished
@@ -390,7 +390,7 @@ public abstract class IDiscoveryServer extends QueryServer {
         /**
          * The specified {@link NetworkInterface}.
          */
-        private NetworkInterface networkInterface;
+        private String networkInterface;
 
         /**
          * The network address for this {@link IDiscoveryChannel}.
@@ -405,35 +405,11 @@ public abstract class IDiscoveryServer extends QueryServer {
          * @param networkInterface the linked {@link NetworkInterface}
          * @param address the inet address
          */
-        public IDiscoveryChannel(DatagramSocket datagramSocket, NetworkInterface networkInterface,
+        public IDiscoveryChannel(DatagramSocket datagramSocket, String networkInterface,
                                  InetAddress address) {
             this.datagramSocket   = datagramSocket;
             this.networkInterface = networkInterface;
             this.address          = address;
-        }
-
-        /**
-         * Validates the stored {@link InetAddress} ({@link #address} field).
-         *
-         * @return {@code true} if the stored address is valid.
-         */
-        public boolean isAddressValid() {
-            if (Arrays.equals(address.getAddress(), "0.0.0.0".getBytes())) {
-                return true;
-            }
-
-            Collection<NetworkInterface> networkInterfaces = listInterfaces();
-            for (NetworkInterface networkIface : networkInterfaces) {
-                if (networkIface.equals(networkInterface)) {
-                    Enumeration<InetAddress> addressE = networkIface.getInetAddresses();
-                    while (addressE.hasMoreElements()) {
-                        if (address.equals(addressE.nextElement())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
         }
 
         /**
@@ -444,7 +420,7 @@ public abstract class IDiscoveryServer extends QueryServer {
          * @param address the address to check
          * @return whether the given variables are equal to the stored ones
          */
-        public boolean is(NetworkInterface networkInterface, InetAddress address) {
+        public boolean is(String networkInterface, InetAddress address) {
             if (this.networkInterface == null && networkInterface == null) {
                 return true;
             } else return this.networkInterface != null && this.networkInterface.equals(networkInterface)

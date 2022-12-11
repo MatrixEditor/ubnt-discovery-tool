@@ -11,8 +11,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.awt.*;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -55,6 +53,12 @@ public class UbntServiceXMLHandler extends DefaultHandler {
      */
     private IUbntService service;
 
+    /**
+     * The listener that will be notifier when this handler has imported all
+     * services.
+     */
+    private FinishListener finishListener;
+
     public UbntServiceXMLHandler(IUbntService.Factory factory) {
         this.factory = factory;
     }
@@ -85,6 +89,15 @@ public class UbntServiceXMLHandler extends DefaultHandler {
         if (listener != null) {
             this.listenerList.add(listener);
         }
+    }
+
+    /**
+     * Sets the finish listener.
+     *
+     * @param finishListener the finish listener
+     */
+    public void setFinishListener(FinishListener finishListener) {
+        this.finishListener = finishListener;
     }
 
     /**
@@ -195,17 +208,13 @@ public class UbntServiceXMLHandler extends DefaultHandler {
 
             case "interface": {
                 requireNonNullService();
-                try {
-                    String name = chars;
-                    // See UbntServiceXMLBuilder for details why this field
-                    // can be null.
-                    if (!name.equalsIgnoreCase("null")) {
-                        service.setNetworkInterface(NetworkInterface.getByName(name));
-                    }
-                    chars = null;
-                } catch (SocketException e) {
-                    throw new IllegalStateException(e);
+                String name = chars;
+                // See UbntServiceXMLBuilder for details why this field
+                // can be null.
+                if (!name.equalsIgnoreCase("null")) {
+                    service.setNetworkInterface(name);
                 }
+                chars = null;
                 break;
             }
 
@@ -230,6 +239,13 @@ public class UbntServiceXMLHandler extends DefaultHandler {
                 recordType  = null;
                 recordClass = null;
                 chars       = null;
+                break;
+            }
+
+            case "iubntservice": {
+                if (finishListener != null) {
+                    EventQueue.invokeLater(finishListener::onFinish);
+                }
                 break;
             }
 
@@ -274,6 +290,10 @@ public class UbntServiceXMLHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length)
             throws SAXException {
         this.chars = new String(ch, start, length);
+    }
+
+    public interface FinishListener {
+        void onFinish();
     }
 
 }
