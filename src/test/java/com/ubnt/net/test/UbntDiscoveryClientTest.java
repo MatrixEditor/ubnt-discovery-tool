@@ -36,7 +36,7 @@ public class UbntDiscoveryClientTest {
         service.add(create(FW_VERSION, "BZZ..."));
         service.add(create(DEFAULT, true));
 
-        TableModel model = UbntDiscoveryTool.frame.table.getModel();
+        TableModel model = UbntDiscoveryTool.getFrame().table.getModel();
         if (model instanceof UbntUiTableModel) {
             ((UbntUiTableModel) model).setScanning(true);
             ((UbntUiTableModel) model).onServiceLocated(service);

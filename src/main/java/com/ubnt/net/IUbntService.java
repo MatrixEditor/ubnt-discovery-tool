@@ -167,6 +167,8 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
     default String getStatus() {
         Record record = get(DEFAULT);
         if (record != null) {
+            Object payload = record.getPayload();
+            if (payload instanceof String) return payload.toString();
             return (Boolean) record.getPayload() ? "Pending" : "Managed/Adopted";
         }
         return "Unknown";
@@ -192,7 +194,7 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
             return "unknown";
         }
 
-        int value = (int) get(WEB_UI).getPayload();
+        int value = ((Number) get(WEB_UI).getPayload()).intValue();
         String protocol;
         if (getPacketVersion() == 1) {
             protocol = (value >> 16) > 0 ? "https" : "http";
@@ -330,6 +332,10 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
          */
         public static RecordParser getParser(int type) {
             return parsers.get(type);
+        }
+
+        public boolean isDefined() {
+            return !String.valueOf(getType()).equals(getTypeName());
         }
 
         /**

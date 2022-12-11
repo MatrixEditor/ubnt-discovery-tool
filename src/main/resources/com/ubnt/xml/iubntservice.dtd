@@ -1,0 +1,15 @@
+<!-- DTD defining the import and export document structure-->
+<!ELEMENT iubntservice (services)>
+<!ELEMENT services (service*) >
+<!ELEMENT service (address, interface, version, records)>
+
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT interface (#PCDATA)>
+<!ELEMENT version (#PCDATA)>
+
+<!ELEMENT records (record*)>
+<!ELEMENT record (#PCDATA)>
+
+<!ATTLIST record
+        type CDATA #REQUIRED
+        class CDATA "String">

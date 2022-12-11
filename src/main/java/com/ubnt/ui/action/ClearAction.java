@@ -39,9 +39,18 @@ public class ClearAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        final int count = tableModel.getRowCount();
+
         table.getRowSorter().setSortKeys(null);
         tableModel.setScanning(false);
         tableModel.clearAll();
         tableModel.reload();
+
+        // REVISION: This call is done because it reduces the occupied memory
+        // by this application. In test cases this call reduces up to 25Mb of
+        // space after a big list of services got deleted. Of course, this
+        // call is unnecessary if there are only a few services that got
+        // removed.
+        if (count > 10) System.gc();
     }
 }

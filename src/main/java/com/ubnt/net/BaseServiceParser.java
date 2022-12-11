@@ -26,8 +26,11 @@ public abstract class BaseServiceParser extends IUbntService.Parser {
      */
     private final IUbntService.Factory factory;
 
+    private final RecordParser defaultParser;
+
     public BaseServiceParser(IUbntService.Factory factory) {
         this.factory = factory;
+        this.defaultParser = new UbntIOUtilities.HexStringRecordParser();
     }
 
     /**
@@ -76,6 +79,9 @@ public abstract class BaseServiceParser extends IUbntService.Parser {
             if (parser != null) {
                 Object o = parser.parseData(data, index, size);
                 record.setPayload(o);
+            }
+            else {
+                record.setPayload(defaultParser.parseData(data, index, size));
             }
             service.add(record);
             index += size;

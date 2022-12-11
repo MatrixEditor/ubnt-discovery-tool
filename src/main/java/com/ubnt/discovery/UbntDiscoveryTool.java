@@ -50,7 +50,7 @@ public final class UbntDiscoveryTool {
     /**
      * The GUI's main frame.
      */
-    public static UbntDiscoveryToolFrame frame;
+    private static UbntDiscoveryToolFrame frame;
 
     /**
      * The build id of this tool defined as {@code main.build.id}.
@@ -342,5 +342,14 @@ public final class UbntDiscoveryTool {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Returns the main frame of this application.
+     *
+     * @return the main frame.
+     */
+    public static UbntDiscoveryToolFrame getFrame() {
+        return frame;
     }
 }

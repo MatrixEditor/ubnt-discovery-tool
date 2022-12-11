@@ -120,6 +120,9 @@ class UbntServiceInfoModel extends AbstractTableModel {
             Map.Entry<String, Record> entry = rows.get(rowIndex);
 
             Record record = entry.getValue();
+            if (columnIndex == 0) {
+                return entry.getKey();
+            }
             if (record.getType() == IUbntService.WEB_UI) {
                 int    port     = service.getWebUiPort();
                 String protocol = service.getWebUiProtocol();
@@ -131,7 +134,7 @@ class UbntServiceInfoModel extends AbstractTableModel {
                 }
             }
 
-            return columnIndex == 0 ? entry.getKey() : entry.getValue().getPayload();
+            return entry.getValue().getPayload();
         }
         return UbntUiDetailsDialog.UNKNOWN;
     }

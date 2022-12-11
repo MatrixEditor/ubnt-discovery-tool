@@ -79,8 +79,12 @@ public class UbntTable extends JTable {
         }
 
         for (IUbntService.Record record : service) {
-            text.append("<p>").append(record.getTypeName())
-                .append(": ").append(record.getPayload()).append("</p>");
+            String name = record.getTypeName();
+            // This prevents the tooltip to display raw content
+            if (!name.equals(String.valueOf(record.getType()))) {
+                text.append("<p>").append(name)
+                    .append(": ").append(record.getPayload()).append("</p>");
+            }
         }
 
         return text.append("</html>").toString();

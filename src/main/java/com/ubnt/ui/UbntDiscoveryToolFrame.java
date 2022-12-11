@@ -7,6 +7,7 @@ import com.ubnt.net.QueryServer;
 import com.ubnt.ui.action.*;
 import com.ubnt.ui.info.UbntServiceInfoDialog;
 import com.ubnt.ui.info.UbntUiDetailsDialog;
+import jdk.jfr.Description;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -29,6 +30,9 @@ public class UbntDiscoveryToolFrame extends JFrame
 
     /**
      * The main table displaying all discovered services.
+     * <p>
+     * <b>NOTE:</b> this field is set to public for internal usage. That
+     * state will be removed soon.
      */
     public UbntTable table;
 
@@ -106,6 +110,26 @@ public class UbntDiscoveryToolFrame extends JFrame
     private UbntUiDetailsDialog detailsDialog;
 
     /**
+     * See {@link ExportAction} class for more details.
+     */
+    private ExportAction exportAction;
+
+    /**
+     * See {@link ImportAction} class for more details.
+     */
+    private ImportAction importAction;
+
+    /**
+     * The global service model.
+     */
+    private UbntServiceTableModel model;
+
+    /**
+     * The toolbar's progress indicator.
+     */
+    private JProgressBar progressBar;
+
+    /**
      * Creates the main frame for the {@code UbntDiscoveryTool}.
      *
      * @param title the frame's title
@@ -135,7 +159,7 @@ public class UbntDiscoveryToolFrame extends JFrame
      * Sets up basic variables of this frame.
      */
     protected void setup() {
-        UbntServiceTableModel model = new UbntServiceTableModel();
+        model = new UbntServiceTableModel();
         for (QueryServer server : UbntDiscoveryTool.getServers()) {
             server.addListener(model);
         }
@@ -157,6 +181,8 @@ public class UbntDiscoveryToolFrame extends JFrame
 
         exitAction = new ExitAction(this);
         infoAction = new OpenInfoAction(table, detailsDialog);
+        exportAction = new ExportAction(model, this);
+        importAction = new ImportAction(model, this, progressBar = new JProgressBar());
 
         ImageIcon image = getResourceIcon("/com/ubnt/icons/ubnt-tool-icon_64.svg");
         if (image != null) {
@@ -199,7 +225,7 @@ public class UbntDiscoveryToolFrame extends JFrame
 
         Action[] actions = {
           scanAction, clearAction, infoAction, null,
-          new ImportAction(), new ExportAction(), null,
+                importAction, exportAction, null,
           exitAction
         };
 
@@ -207,6 +233,8 @@ public class UbntDiscoveryToolFrame extends JFrame
             if (action == null) toolBar.addSeparator();
             else toolBar.add(action);
         }
+        toolBar.addSeparator();
+        toolBar.add(progressBar);
 
         JPanel helpContext = new JPanel(new FlowLayout());
         helpContext.add(helpLabel);
@@ -293,6 +321,7 @@ public class UbntDiscoveryToolFrame extends JFrame
     public void nextSecond(boolean finished, long second) {
         EventQueue.invokeLater(() -> {
             if (finished) {
+                model.setScanning(false);
                 scanButton.setText(getString("button.scan"));
                 if (scanAction != null) {
                     scanAction.putValue(Action.SMALL_ICON, scanReadyIcon);

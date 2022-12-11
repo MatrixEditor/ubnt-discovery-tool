@@ -32,14 +32,6 @@ public abstract class IDiscoveryServer extends QueryServer {
     private static final Logger idsLogger =
             Logger.getLogger(IDiscoveryServer.class.getSimpleName());
 
-    /**
-     * This map stores all services that were found during a scan. Note that
-     * this object is static, so all servers should add their discovered
-     * services here.
-     */
-    private static final Map<Integer, IUbntService> services =
-            Collections.synchronizedMap(new HashMap<>());
-
     static {
         idsLogger.setLevel(Level.OFF);
     }
@@ -267,16 +259,11 @@ public abstract class IDiscoveryServer extends QueryServer {
                     IUbntService service = parsePacket(packet);
                     Arrays.fill(buffer, (byte) 0);
                     if (service != null) {
-                        final int code = service.hashCode();
-                        synchronized (IDiscoveryServer.services) {
-                            Object other = services.get(code);
-                            if (other != null) {
-                                services.remove(code);
-                            }
-                            services.put(code, service);
-                            idsLogger.info("[IDS]::Listen(newService)");
-                            fireOnServiceDiscovered(service);
-                        }
+                        service.setNetworkInterface(channel.networkInterface);
+                        service.setSourceAddress(packet.getAddress());
+
+                        idsLogger.info("[IDS]::Listen(newService)");
+                        fireOnServiceDiscovered(service);
                     }
 
                 }
@@ -385,7 +372,7 @@ public abstract class IDiscoveryServer extends QueryServer {
      */
     @Override
     public void clearAll() throws IOException {
-        services.clear();
+        packetCache.clear();
     }
 
     /**
