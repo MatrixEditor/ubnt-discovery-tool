@@ -79,10 +79,6 @@ public class UbntDiscoveryServer extends IDiscoveryServer {
             dsLogger.info("[UDS]::static{parser="
                                   + serviceParser.getClass().getSimpleName() + "}");
         }
-
-        // Due to wrong service loading, this call has to be done in order to
-        // unsure the parsers are initialized.
-        new DefaultServiceParser();
     }
 
     /**
@@ -111,6 +107,15 @@ public class UbntDiscoveryServer extends IDiscoveryServer {
      */
     public static synchronized void removeVersion(int version) {
         parserCache.remove(version);
+    }
+
+    /**
+     * Returns the registered parser instance.
+     *
+     * @param version the packet version
+     */
+    public static synchronized IUbntService.Parser ofVersion(int version) {
+        return parserCache.get(version);
     }
 
     /**

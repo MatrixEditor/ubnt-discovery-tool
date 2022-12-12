@@ -157,7 +157,19 @@ public interface IUbntService extends Iterable<IUbntService.Record> {
      */
     default byte[] getRawHardwareAddress() {
         Record record = get(HW_ADDRESS);
-        return record != null ? record.getData() : new byte[6];
+        if (record != null) {
+            Object data = record.getPayload();
+            if (data instanceof String) {
+                // By default, we are expecting a string that
+                // contains four numbers separated with a '.'
+                return ((String) data).replaceAll("\\.", "")
+                                      .getBytes();
+            }
+            else if (data instanceof byte[]) {
+                return (byte[]) data;
+            }
+        }
+        return new byte[4];
     }
 
     /**
