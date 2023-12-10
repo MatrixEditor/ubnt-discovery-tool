@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE iubntservice SYSTEM "iubntservice.dtd">
+
+<iubntservice>
+    <services>
+        <service>
+            <address>127.0.0.1</address>
+            <interface>eth0</interface>
+            <version>1</version>
+            <records>
+                <record type="1">value</record>
+                <record type="3" class="IpInfo">mac;ip</record>
+            </records>
+        </service>
+    </services>
+</iubntservice>

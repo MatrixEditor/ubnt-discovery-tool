@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file. -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="ubnt-tool-icon_64.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       x1="18.228571"
+       y1="22.201368"
+       x2="107.48466"
+       y2="46.642452"
+       id="linearGradient-1"
+       gradientTransform="scale(1.0000125,0.9999875)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#46C7FD"
+         offset="0%"
+         id="stop1" />
+      <stop
+         stop-color="#006FFF"
+         offset="100%"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       x1="18.228472"
+       y1="22.205477"
+       x2="107.48406"
+       y2="46.64616"
+       id="linearGradient-2"
+       gradientTransform="scale(1.000018,0.99998203)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#46C7FD"
+         offset="0%"
+         id="stop3" />
+      <stop
+         stop-color="#006FFF"
+         offset="100%"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       x1="18.227303"
+       y1="22.20507"
+       x2="107.47717"
+       y2="46.641048"
+       id="linearGradient-3"
+       gradientTransform="scale(1.0000822,0.99991785)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#46C7FD"
+         offset="0%"
+         id="stop5" />
+      <stop
+         stop-color="#006FFF"
+         offset="100%"
+         id="stop6" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.4140625"
+     inkscape:cx="26.114495"
+     inkscape:cy="40.457978"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="3832"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <g
+     fill="none"
+     fill-rule="evenodd"
+     id="g2">
+    <path
+       fill="#9AA7B0"
+       fill-opacity=".8"
+       d="M1,1 L15,1 L15,14 L1,14 L1,1 Z M2,4 L2,13 L14,13 L14,4 L2,4 Z"
+       id="path1" />
+    <polygon
+       fill="#F26522"
+       points="11.946 5 9 2.459 11.946 0"
+       id="polygon1" />
+    <polygon
+       fill="#62B543"
+       points="13 5 15.946 2.459 13 0"
+       id="polygon2" />
+  </g>
+  <g
+     id="Page-1"
+     stroke="none"
+     stroke-width="1"
+     fill="none"
+     fill-rule="evenodd"
+     transform="matrix(0.05555413,0,0,0.0554262,4.5605968,4.9972589)">
+    <g
+       id="ubiquiti_logo"
+       fill-rule="nonzero">
+      <polygon
+         id="Path"
+         fill="url(#linearGradient-1)"
+         points="123.998,7.9988 123.998,0 115.999,0 115.999,7.9988 "
+         style="fill:url(#linearGradient-1)" />
+      <path
+         d="M 96.01,56.02 V 39.994 l 0.004,0.005 h 15.993 V 55.996 H 128 v 5.071 c 0,5.861 -0.498,12.806 -1.644,18.26 -0.642,3.048 -1.615,6.077 -2.756,8.986 -1.169,2.976 -2.516,5.827 -3.982,8.382 -1.913,3.336 -4.127,6.537 -6.695,9.547 l -0.136,0.158 -0.224,0.262 c -0.617,0.724 -1.227,1.44 -1.898,2.139 -0.781,0.834 -1.591,1.625 -2.415,2.415 -10.237,9.859 -23.575,16.017 -37.521,17.431 -1.678,0.172 -5.047,0.35 -6.729,0.35 -1.687,-0.005 -5.051,-0.178 -6.729,-0.35 -13.946,-1.414 -27.2839,-7.577 -37.5208,-17.431 -0.8243,-0.79 -1.6343,-1.581 -2.4155,-2.415 -0.7039,-0.729 -1.3383,-1.477 -1.9801,-2.233 l -0.0021,-0.002 -0.2751,-0.324 c -2.5689,-3.01 -4.783,-6.211 -6.6952,-9.547 C 6.9156,94.136 5.5689,91.289 4.3995,88.313 3.259,85.404 2.2861,82.375 1.6438,79.327 0.4984,73.868 0,66.928 0,61.067 V 1.0016 H 31.9904 V 56.02 c 0,0 0,4.218 0.0527,5.598 l 0.0121,0.322 v 0.002 c 0.0673,1.785 0.1332,3.534 0.3186,5.274 0.5271,4.941 1.6199,9.628 3.8722,13.592 0.652,1.145 1.313,2.257 2.104,3.311 4.812,6.417 12.135,11.234 21.27,12.576 1.087,0.158 3.282,0.297 4.38,0.297 1.098,0 3.292,-0.139 4.38,-0.297 9.135,-1.342 16.458,-6.159 21.27,-12.576 0.795,-1.054 1.452,-2.166 2.104,-3.311 2.252,-3.964 3.345,-8.651 3.872,-13.592 0.186,-1.744 0.252,-3.495 0.319,-5.284 l 0.012,-0.314 C 96.01,60.238 96.01,56.02 96.01,56.02 Z"
+         id="path6"
+         fill="url(#linearGradient-2)"
+         style="fill:url(#linearGradient-2)" />
+      <polygon
+         id="polygon6"
+         fill="url(#linearGradient-3)"
+         points="100.002,24.0012 100.002,12.0006 112.002,12.0006 112.002,23.9964 128,23.9964 128,39.994 112.002,39.994 112.002,24.0012 "
+         style="fill:url(#linearGradient-3)" />
+    </g>
+  </g>
+</svg>
